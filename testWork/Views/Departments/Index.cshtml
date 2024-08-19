@@ -1,0 +1,50 @@
+﻿@using testWork.ViewModels;
+@model List<DepartmentViewModel>
+@{
+	ViewData["Title"] = "Список подразделений";
+}
+<div class="d-flex">
+    <div style="margin-inline-end:5px">
+        <label for="site-search">Отбор:</label>
+        <input type="search" id="textsearch" name="department" />
+        <input class="btn btn-info" type="button" id="buttonSearch" value="Отобрать" />
+    </div>
+</div>
+<div id="objList">
+    @await Html.PartialAsync("Departments", Model)
+</div>
+@using (Html.BeginForm("Sync", "Departments", FormMethod.Post, new { enctype = "multipart/form-data", runat = "server" }))
+{
+    <div class="input-group mb-3">
+        <input class="form-control" id="file" name="uploadedFile" type="file" accept=".txt" aria-describedby="button-addon2" />
+        <input type="submit" id="buttonSync" class="btn btn-outline-secondary" value="Синхронизация данных">
+    </div>
+}
+<script>
+    $(function () {
+        var intervalID = setInterval(function () {
+            var search = document.getElementById("textsearch").value;
+            Refresh(search);
+        }, 3000);
+        
+    });
+    $('#buttonSearch').on('click', function () {
+        var search = document.getElementById("textsearch").value;
+        Refresh(search);
+    });
+    function Refresh(search) {
+        if (search == '') {
+            url = 'Departments/Refresh';
+        }
+        else {
+            url = 'Departments/Search?search=' + search;
+        }
+        $.ajax({
+            type: 'POST',
+            url: url,
+            success: function (response) {
+                document.getElementById("objList").innerHTML = response;
+            }
+        });
+    }
+</script>

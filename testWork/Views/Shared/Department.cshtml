@@ -1,0 +1,16 @@
+﻿@using testWork.ViewModels;
+@model DepartmentViewModel
+<li id="@Model.Id">
+	@Model.Name - @Model.GetStatus
+	<ol>
+		@{
+			if (Model.Departments!=null)
+
+				foreach (DepartmentViewModel department in Model.getDepartments())
+
+				{
+					@await Html.PartialAsync("Department", department)
+				}
+		}
+	</ol>
+</li>

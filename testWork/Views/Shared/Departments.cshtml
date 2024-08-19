@@ -1,0 +1,20 @@
+﻿@using testWork.ViewModels;
+@model List<DepartmentViewModel>
+@{
+    @if (Model.Any())
+    {
+
+        foreach (DepartmentViewModel department in Model.ToList())
+
+        {
+            @await Html.PartialAsync("Department", department)
+        }
+
+    }
+    else
+    {
+        <h3>
+            <small class="text-muted">Здесь будут ваши подразделения</small>
+        </h3>
+    }
+}
